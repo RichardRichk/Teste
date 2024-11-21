@@ -1,0 +1,1 @@
+Scaffold-DbContext "Data Source=NOTE17-S21\SQLSERVER; initial catalog=todolist; User Id = sa; Pwd = Senai@134; TrustServerCertificate=true;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -ContextDir Contexts -Context todolistContext -f

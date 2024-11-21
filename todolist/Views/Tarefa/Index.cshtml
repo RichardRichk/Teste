@@ -1,0 +1,69 @@
+﻿@model Tarefa
+
+@{
+    ViewData["Title"] = "Cadastro de Tarefas";
+}
+
+<h2>Cadastro de Tarefa</h2>
+
+<form asp-action="@(Model?.IdTarefa == 0 ? "Create" : "Update")">
+
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success w-25">
+            @TempData["MensagemSucesso"]
+        </div>
+    }
+
+    <input type="hidden" asp-for="IdTarefa" value="@Model.IdTarefa" />
+
+    <div class="">
+        <label>Descrição</label>
+        <input type="text" class="" asp-for="Descricao" required />
+    </div>
+    <div class="form-group">
+        <label>Setor</label>
+        <input type="text" class="" asp-for="Setor" required />
+    </div>
+
+    <div class="">
+        <label>Usuário:</label>
+        <select class="" asp-for="IdUsuario" required>
+            <option value="">Selecione o usuário</option>
+            @foreach (var usuario in ViewBag.Usuarios)
+            {
+                <option value="@usuario.IdUsuario">@usuario.Nome</option>
+            }
+        </select>
+    </div>
+
+
+    <div class="">
+        <label>Prioridade:</label>
+        <select class="" asp-for="IdPrioridade" required>
+            <option value="">Selecione a prioridade</option>
+            @foreach (var prioridade in ViewBag.Prioridades)
+            {
+                <option value="@prioridade.IdPrioridade">@prioridade.Titulo</option>
+            }
+        </select>
+    </div>
+
+    @if (Model.IdTarefa != 0)
+    {
+        <!-- Campo somente para exibir o status atual sem permitir edição -->
+        <div class="">
+            <input type="hidden" class="form-control" value="@Model.IdStatusNavigation?.Status1" readonly />
+        </div>
+    }
+    else
+    {
+        @* valor padrao quando cria uma nova tarefa *@
+        <div class="">
+            <input type="hidden" class="form-control" value="1" readonly />
+        </div>
+    }
+
+
+    <button type="submit" class="">Salvar</button>
+</form>

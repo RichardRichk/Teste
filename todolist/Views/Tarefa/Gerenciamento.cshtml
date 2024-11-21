@@ -1,0 +1,185 @@
+﻿@model Tarefa
+
+@{
+    ViewData["Title"] = "Gerenciamento de Tarefa";
+}
+
+<h2>Tarefas</h2>
+
+<div class="container mt-4">
+
+    <div class="row">
+
+        <!-- Coluna 'A Fazer' -->
+        <div class="col-md-4">
+            <h3>A Fazer</h3>
+            @foreach (var tarefa in ViewBag.TarefasAgrupadas.AFazer)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Descrição: @tarefa.Descricao</p>
+                        <p class="card-text">Setor: @tarefa.Setor</p>
+
+                        <!-- Verificando se a propriedade de navegação não é nula antes de acessar -->
+                        <p class="card-text">
+                            Prioridade: @(tarefa.IdPrioridadeNavigation != null ? tarefa.IdPrioridadeNavigation.Titulo : "Não definida")
+                        </p>
+
+                        <p class="card-text">
+                            Vinculado a: @(tarefa.IdUsuarioNavigation != null ? tarefa.IdUsuarioNavigation.Nome : "Não atribuído")
+                        </p>
+
+                        <!-- Botão para enviar a atualização -->
+                        <a class="" asp-controller="Tarefa" asp-action="Edit" asp-route-id="@tarefa.IdTarefa">Editar</a>
+
+                        <form asp-action="Delete" asp-route-id="@tarefa.IdTarefa" method="post" style="display:inline;">
+                            <button type="submit" class="" onclick="return confirmarExclusao()">Excluir</button>
+                        </form>
+
+                        <!-- Status - Radio Button para alterar -->
+                        <form asp-action="AlterarStatus" method="post">
+                            <input type="hidden" name="id" value="@tarefa.IdTarefa" />
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="1"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 1 ? "checked" : "") />
+                                A Fazer
+                            </label>
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="2"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 2 ? "checked" : "") />
+                                Em Progresso
+                            </label>
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="3"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 3 ? "checked" : "") />
+                                Concluído
+                            </label>
+
+                            <button class="" type="submit">Alterar Status</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Coluna 'Em Progresso' -->
+        <div class="col-md-4">
+            <h3>Fazendo</h3>
+            @foreach (var tarefa in ViewBag.TarefasAgrupadas.EmProgresso)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Descrição: @tarefa.Descricao</p>
+                        <p class="card-text">Setor: @tarefa.Setor</p>
+
+                        <!-- Verificando se a propriedade de navegação não é nula antes de acessar -->
+                        <p class="card-text">
+                            Prioridade: @(tarefa.IdPrioridadeNavigation != null ? tarefa.IdPrioridadeNavigation.Titulo : "Não definida")
+                        </p>
+                        <p class="card-text">
+                            Vinculado a: @(tarefa.IdUsuarioNavigation != null ? tarefa.IdUsuarioNavigation.Nome : "Não atribuído")
+                        </p>
+
+                        <!-- Botão para enviar a tarefa para a atualização -->
+                        <a class="" asp-controller="Tarefa" asp-action="Edit" asp-route-id="@tarefa.IdTarefa">Editar</a>
+
+                        <!-- Botão para excluir a tarefa -->
+                        <form asp-action="Delete" asp-route-id="@tarefa.IdTarefa" method="post" style="display:inline;">
+                            <button class="" type="submit" onclick="return confirmarExclusao()">Excluir</button>
+                        </form>
+
+                        <!-- Status - Radio Button para alterar -->
+                        <form asp-action="AlterarStatus" method="post">
+                            <input type="hidden" name="id" value="@tarefa.IdTarefa" />
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="1"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 1 ? "checked" : "") />
+                                A Fazer
+                            </label>
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="2"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 2 ? "checked" : "") />
+                                Em Progresso
+                            </label>
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="3"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 3 ? "checked" : "") />
+                                Concluído
+                            </label>
+
+                            <button type="submit" class="">Alterar Status</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Coluna 'Concluído' -->
+        <div class="col-md-4">
+            <h3>Pronto</h3>
+            @foreach (var tarefa in ViewBag.TarefasAgrupadas.Concluido)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title">Descrição: @tarefa.Descricao</p>
+                        <p class="card-text">Setor: @tarefa.Setor</p>
+
+                        <!-- Verificando se a propriedade de navegação não é nula antes de acessar -->
+                        <p class="card-text">
+                            Prioridade: @(tarefa.IdPrioridadeNavigation != null ? tarefa.IdPrioridadeNavigation.Titulo : "Não definida")
+                        </p>
+                        <p class="card-text">
+                            Vinculado a: @(tarefa.IdUsuarioNavigation != null ? tarefa.IdUsuarioNavigation.Nome : "Não atribuído")
+                        </p>
+
+                        <!-- Botão para enviar a tarefa para a atualização -->
+                        <a class="" asp-controller="Tarefa" asp-action="Edit" asp-route-id="@tarefa.IdTarefa">Editar</a>
+
+                        <!-- Botão para excluir a tarefa -->
+                        <form asp-action="Delete" asp-route-id="@tarefa.IdTarefa" method="post" style="display:inline;">
+                            <button class="" type="submit" onclick="return confirmarExclusao()">Excluir</button>
+                        </form>
+
+                        <!-- Status - Radio Button para alterar -->
+                        <form asp-action="AlterarStatus" method="post">
+                            <input type="hidden" name="id" value="@tarefa.IdTarefa" />
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="1"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 1 ? "checked" : "") />
+                                A Fazer
+                            </label>
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="2"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 2 ? "checked" : "") />
+                                Em Progresso
+                            </label>
+
+                            <label>
+                                <input type="radio" name="novoStatus" value="3"
+                                @(tarefa.IdStatusNavigation != null && tarefa.IdStatusNavigation.IdStatus == 3 ? "checked" : "") />
+                                Concluído
+                            </label>
+
+                            <button class="" type="submit">Alterar Status</button>
+                        </form>
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmarExclusao() {
+        return confirm("Tem certeza de que deseja excluir esta tarefa?");
+    }
+</script>
