@@ -4,31 +4,36 @@
     ViewData["Title"] = "Cadastro de Tarefas";
 }
 
-<h2>Cadastro de Tarefa</h2>
+<h2 class="text-center">Cadastro de Tarefa</h2>
 
-<form asp-action="@(Model?.IdTarefa == 0 ? "Create" : "Update")">
+<form asp-action="@(Model?.IdTarefa == 0 ? "Create" : "Update")" class="p-4 bg-white rounded shadow">
 
     @if (TempData["MensagemSucesso"] != null)
     {
-        <div class="alert alert-success w-25">
+        <div class="alert alert-success w-100">
             @TempData["MensagemSucesso"]
         </div>
     }
 
+    <!-- Campo oculto para armazenar o Id da Tarefa -->
     <input type="hidden" asp-for="IdTarefa" value="@Model.IdTarefa" />
 
-    <div class="">
-        <label>Descrição</label>
-        <input type="text" class="" asp-for="Descricao" required />
-    </div>
+    <!-- Campo para Descrição -->
     <div class="form-group">
-        <label>Setor</label>
-        <input type="text" class="" asp-for="Setor" required />
+        <label>Descrição</label>
+        <input type="text" class="form-control" asp-for="Descricao" required />
     </div>
 
-    <div class="">
+    <!-- Campo para Setor -->
+    <div class="form-group">
+        <label>Setor</label>
+        <input type="text" class="form-control" asp-for="Setor" required />
+    </div>
+
+    <!-- Dropdown de Usuários -->
+    <div class="form-group">
         <label>Usuário:</label>
-        <select class="" asp-for="IdUsuario" required>
+        <select class="form-control" asp-for="IdUsuario" required>
             <option value="">Selecione o usuário</option>
             @foreach (var usuario in ViewBag.Usuarios)
             {
@@ -37,10 +42,10 @@
         </select>
     </div>
 
-
-    <div class="">
+    <!-- Dropdown de Prioridades -->
+    <div class="form-group">
         <label>Prioridade:</label>
-        <select class="" asp-for="IdPrioridade" required>
+        <select class="form-control" asp-for="IdPrioridade" required>
             <option value="">Selecione a prioridade</option>
             @foreach (var prioridade in ViewBag.Prioridades)
             {
@@ -49,21 +54,6 @@
         </select>
     </div>
 
-    @if (Model.IdTarefa != 0)
-    {
-        <!-- Campo somente para exibir o status atual sem permitir edição -->
-        <div class="">
-            <input type="hidden" class="form-control" value="@Model.IdStatusNavigation?.Status1" readonly />
-        </div>
-    }
-    else
-    {
-        @* valor padrao quando cria uma nova tarefa *@
-        <div class="">
-            <input type="hidden" class="form-control" value="1" readonly />
-        </div>
-    }
-
-
-    <button type="submit" class="">Salvar</button>
+    <!-- Botão de Salvar -->
+    <button type="submit" class="btn btn-primary w-100 mt-3">Salvar</button>
 </form>
